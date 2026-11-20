@@ -30,7 +30,11 @@ export class FixesClient extends McpTools {
     });
   }
   requestReverification(args: ReverificationRequest): Promise<KnowledgeResult> {
-    return this.call("request_reverification", args);
+    // MCP negotiation yields before tools/call serializes the selection.
+    return this.call("request_reverification", {
+      ...args,
+      finding_ids: [...args.finding_ids],
+    });
   }
   getReverification(
     requestId: string,
