@@ -115,8 +115,10 @@ export class ProoflineClient extends Operations {
     parameters: UploadCoverageReportsParameters,
     upload: CoverageFilesUpload,
   ): Promise<components["schemas"]["CoverageUploadResponse"]> {
+    // Reading reports yields before the generated operation builds its URL.
+    const target = { ...parameters, path: { ...parameters.path } };
     return this.uploadCoverageReports(
-      parameters,
+      target,
       await readCoverageFiles(upload),
     );
   }
